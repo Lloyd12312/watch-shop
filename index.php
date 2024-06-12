@@ -9,6 +9,17 @@ try {
     echo 'Connection failed: ' . $e->getMessage();
     exit();
 }
+
+$userIsProductUser = false;
+if(isset($_SESSION['email'])) {
+    $email = $_SESSION['email'];
+    $stmt = $pdo->prepare("SELECT pu FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    if($user && $user['pu'] == 1) {
+        $userIsProductUser = true;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -90,15 +101,13 @@ try {
 <!--==================== CART ====================-->
 <div class="cart" id="cart">
     <i class='bx bx-x cart__close' id="cart-close"></i>
-
     <h2 class="cart__title-center">My Cart</h2>
-
     <div class="cart__container">
         <?php
+        $hasItemsInCart = false;
         if(isset($_SESSION['email'])) {
             // Получаем email текущего пользователя из сессии
             $email = $_SESSION['email'];
-
             // Запрос к базе данных для получения содержимого корзины пользователя
             $stmt = $pdo->prepare("SELECT p.id, p.product_name, p.product_price, p.product_image, c.quantity 
                                     FROM products p 
@@ -107,12 +116,11 @@ try {
                                     WHERE u.email = ?");
             $stmt->execute([$email]);
             $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
             // Инициализируем переменную для хранения общей суммы
             $totalPrice = 0;
-
             // Если товары найдены, выводим их на страницу
             if ($cartItems) {
+                $hasItemsInCart = true;
                 foreach ($cartItems as $item) {
                     // Считаем общую сумму товаров в корзине
                     $totalPrice += $item['product_price'] * $item['quantity'];
@@ -150,6 +158,11 @@ try {
         <span class="cart__total">Total Price:</span>
         <span class="cart__total-price">$<?php echo number_format($totalPrice, 2); ?></span>
     </div>
+    <?php if ($hasItemsInCart): ?>
+        <a href="checkout.php"> 
+            <button class="cart__checkout-button">Checkout</button>
+        </a>
+    <?php endif; ?>
 </div>
 
 <!--==================== MAIN ====================-->
@@ -213,18 +226,12 @@ try {
 
     <!--==================== PRODUCTS ====================-->
     <section class="products section container" id="products">
-        <h2 class="section__title">
-            Products
-        </h2>
+        <h2 class="section__title">Products</h2>
 
         <?php
-        // Запрос к базе данных
         $stmt = $pdo->query("SELECT * FROM `products`");
-
-        // Проверка, получили ли мы данные
         $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Если товары найдены, выводим их на страницу
         if ($products) {
             echo '<div class="products__container grid">';
             foreach ($products as $product) {
@@ -235,6 +242,10 @@ try {
                 echo '<button class="products__button" data-product-id="' . htmlspecialchars($product['id']) . '">';
                 echo '<i class="bx bx-shopping-bag"></i>';
                 echo '</button>';
+                if ($userIsProductUser) {
+                    echo '<button class="products__edit-button" data-product-id="' . htmlspecialchars($product['id']) . '">Edit</button>';
+                    echo '<button class="products__delete-button" data-product-id="' . htmlspecialchars($product['id']) . '">Delete</button>';
+                }
                 echo '</article>';
             }
             echo '</div>';
@@ -414,5 +425,8 @@ try {
 
     <!--=============== MAIN JS ===============-->
     <script src="assets/js/main.js"></script>
+
+    <!--=============== THEME JS ===============-->
+    <script src="assets/js/theme.js"></script>
 </body>
 </html>

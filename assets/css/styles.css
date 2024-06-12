@@ -552,7 +552,29 @@ body.dark-theme {
   transition: .3s;
 }
 
-.products__button:hover {
+.products__delete-button,
+.products__edit-button {
+  background-color: var(--button-color);
+  padding: .4rem;
+  color: #fff;
+  font-size: 1rem;
+  position: absolute;
+  transition: .3s;
+}
+
+.products__delete-button {
+  left: 0;
+  top: 0;
+}
+
+.products__edit-button {
+  right: 0;
+  top: 0;
+}
+
+.products__button:hover,
+.products__edit-button:hover,
+.products__delete-button:hover {
   background-color: var(--button-color-alt);
 }
 
@@ -889,6 +911,8 @@ body.dark-theme {
 .cart__container {
   display: grid;
   row-gap: 1.5rem;
+  max-height: 550px; /* Примерная высота, которую вы хотите установить */
+  overflow-y: auto;
 }
 
 .cart__card {
@@ -966,6 +990,16 @@ body.dark-theme {
 .cart__prices-total {
   font-size: var(--h3-font-size);
   font-weight: var(--font-medium);
+}
+
+.cart__checkout-button{
+  background-color: var(--button-color);
+  padding: .9rem;
+  color: #fff;
+  font-size: 1rem;
+  position: absolute;
+  transition: .3s;
+  display: flex;
 }
 
 /* Show cart */

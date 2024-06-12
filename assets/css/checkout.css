@@ -1,0 +1,129 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+.column h3{
+    transition: .3s;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: hsl(31, 100%, 70%);
+    padding: 25px;
+}
+
+.container form {
+    width: 700px;
+    padding: 40px;
+    background: #fff;
+    border-radius: 10px;
+    transition: .3s;
+}
+
+.column span{
+    transition: .3s;
+}
+
+form .row {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.row .column{
+    flex: 1 1 250px;
+}
+
+.column .title{
+    font-size: 20px;
+    color: #333;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.column .input-box{
+    margin: 15px 0;
+}
+
+.input-box span{
+    display: block;
+    margin-bottom: 10px;
+}
+
+.input-box input{
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px; 
+}
+
+.column .flex{
+    display: flex;
+    gap: 15px;
+}
+
+.flex .input-box{
+    margin-top: 5px;
+}
+
+.input-box img{
+    height: 34px;
+    margin-top: 5px;
+    filter: drop-shadow(0 0 1px #000);
+}
+
+form .btn{
+    width: 100%;
+    padding: 12px;
+    background: hsl(31, 100%, 70%);
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    font-size: 17px;
+    color: #fff;
+    margin-top: 5px;
+    cursor: pointer;
+    transition: .5s;
+}
+
+form .btn:hover{
+    background-color: #FFC689;
+}
+
+/*========== 
+    Color changes in some parts of 
+    the website, in dark theme 
+==========*/
+.dark-theme .container form{
+    background: hsl(0, 0%, 12%);
+}
+
+.dark-theme .column h3{
+    color: hsl(0, 0%, 95%);;
+}
+
+.dark-theme .column span{
+    color: hsl(0, 0%, 75%);
+}
+
+.dark-theme .change-theme{
+    color: hsl(0, 0%, 95%);
+}
+
+.change-theme{
+    color: hsl(0, 0%, 15%);
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: .4s;
+    display: flex;
+    padding-bottom: 1.5rem;
+}
